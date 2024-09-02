@@ -1,0 +1,15 @@
+<resources>
+    <string name="merge">Birleştirmek/Ayrıştırmak için split APK\'yı seçin.</string>
+    <string name="success_saved">Dosya başarıyla kaydedildi.</string>
+    <string name="ask">Her seferinde dosyanın nereye kaydedileceğini sor (devre dışı bırakılırsa, APK, orijinal APK\'nın bulunduğu klasöre kaydedilir)</string>
+    <string name="grant_storage">Storage permission needed to save to the same dir as the selected file</string>
+    <string name="no_filepath">Seçilen dosyanın dosya yolu bulunamadı</string>
+    <string name="change_text_color">Yazı rengini değiştir</string>
+    <string name="change_background_color">Arkaplan rengini değiştir </string>
+    <string name="sign_failed">APK imzalanamadığından böylece kaydediliyor.</string>
+    <string name="cancel">İptal et</string>
+    <string name="select">Seç</string>
+    <string name="label_parent_directory">Ana Klasör</string>
+    <string name="last_edit">Son düzenlenme: </string>
+    <string name="error_dir_access">Klasöre erişilemedi</string>
+</resources>

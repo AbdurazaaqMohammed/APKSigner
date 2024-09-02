@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ask">Запитувати де зберегти файл (якщо вимкнено, зберігає APK у тому ж каталозі, з якого був APK файл)</string>
+    <string name="cancel">Відміна</string>
+    <string name="change_background_color">Змінити колір тла</string>
+    <string name="change_text_color">Змінити колір тексту</string>
+    <string name="select">Вибрати</string>
+    <string name="error_dir_access">Доступ до каталогу неможливий</string>
+    <string name="grant_storage">Необхідний дозвіл на зберігання для збереження в тій же папці, що й вибраний файл</string>
+    <string name="label_parent_directory">Батьківський каталог</string>
+	<string name="lang">Мова</string>								 
+    <string name="last_edit">Останнє редагування:</string>
+    <string name="merge">Виберіть (Split APK) для обєднання/антирозділення</string>
+    <string name="no_filepath">Не вдалося знайти шлях до вибраного файлу</string>
+    <string name="sign_failed">Неможливо підписати APK, збережено без підпису</string>
+    <string name="success_saved">Файл успішно збережено</string>
+</resources>

@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name" translatable="false">APK Signer</string>
+    <string name="merge" translatable="false">Select split APK to Merge/AntiSplit</string>
+    <string name="success_saved" translatable="false">File saved successfully</string>
+    <string name="ask" translatable="false">Ask where to save the file each time (if disabled, save the signed APK to the same directory where the file was from)</string>
+    <string name="grant_storage" translatable="false">Storage permission needed to save to the same dir as the selected file</string>
+    <string name="no_filepath" translatable="false">"Can\'t write to the filepath "</string>
+    <string name="change_text_color" translatable="false">Change text color</string>
+    <string name="change_background_color" translatable="false">Change background color</string>
+    <string name="sign_failed" translatable="false">Failed to sign APK, saving without signing</string>
+    <string name="cancel" translatable="false">Cancel</string>
+    <string name="select" translatable="false">Select</string>
+    <string name="label_parent_directory" translatable="false">Parent Directory</string>
+    <string name="last_edit" translatable="false">Last edited: </string>
+    <string name="error_dir_access" translatable="false">Directory cannot be accessed</string>
+    <string name="lang" translatable="false">Language</string>
+    <string name="settings" translatable="false">Settings</string>
+    <string name="close" translatable="false">Close</string>
+    <string-array name="langs_display">
+        <item>English</item>
+        <item>Español</item>
+        <item>Français</item>
+        <item>Bahasa Indonesia</item>
+        <item>Italiano</item>
+        <item>русский язык</item>
+        <item>Türkçe</item>
+        <item>українська мова</item>
+        <item>Português</item>
+    </string-array>
+    <string-array name="langs">
+        <item>en</item>
+        <item>es</item>
+        <item>fr</item>
+        <item>in</item>
+        <item>it</item>
+        <item>ru</item>
+        <item>tr</item>
+        <item>uk</item>
+        <item>pt-BR</item>
+    </string-array>
+    <string name="label_parent_dir" translatable="false">…</string>
+    <string name="create_issue" translatable="false">Create GitHub Issue</string>
+    <string name="copy_log" translatable="false">Copy log</string>
+    <string name="copied_log" translatable="false">Copied log</string>
+    <string name="select_apk_to_sign" translatable="false">Select APK to sign</string>
+    <string name="select_key" translatable="false">Select signature key (current: (%1$s))</string>
+    <string name="v3" translatable="false">Signature scheme v3</string>
+    <string name="v4" translatable="false">Signature scheme v4</string>
+    <string name="v2" translatable="false">Signature scheme v2</string>
+    <string name="v1" translatable="false">Signature scheme v1</string>
+</resources>

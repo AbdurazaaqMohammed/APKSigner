@@ -1,0 +1,21 @@
+<resources>
+    <string name="merge">Seleziona l\'APK suddiviso da unire</string>
+    <string name="success_saved">Esportazione file APK unito completata</string>
+    <string name="ask">Chiedi ogni volta dove salvare il file (se disattivato, il file APK unito verrà esportato nella medesima cartella del file APK)</string>
+    <string name="grant_storage">È richiesto il permesso di accesso alla memoria interna per effettuare il salvataggio nella stessa cartella del file suddiviso selezionato</string>
+    <string name="no_filepath">"Impossibile salvare nel percorso "</string>
+    <string name="change_text_color">Modifica colore del testo</string>
+    <string name="change_background_color">Modifica colore di sfondo</string>
+    <string name="sign_failed">Errore durante la firma del file APK, il file salvato  non sarà firmato</string>
+    <string name="cancel">Annulla</string>
+    <string name="select">Seleziona</string>
+    <string name="label_parent_directory">Cartella Superiore</string>
+    <string name="last_edit">Ultima modifica: </string>
+    <string name="error_dir_access">Impossibile accedere alla cartella</string>
+    <string name="lang" translatable="false">Lingua</string>
+    <string name="settings">Impostazioni</string>
+    <string name="close">Chiudi</string>
+    <string name="create_issue">Segnala un problema su GitHub</string>
+    <string name="copy_log">Copia registro eventi</string>
+    <string name="copied_log">Registro eventi copiato</string>
+</resources>

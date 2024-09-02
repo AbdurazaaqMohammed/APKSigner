@@ -1,0 +1,18 @@
+<resources>
+    <string name="merge">Sélectionner des APK fractionnés pour Fusionner/AntiSplit</string>
+    <string name="success_saved">Fichier enregistré avec succès</string>
+    <string name="ask">Demander où enregistrer le fichier à chaque fois (si désactivé, enregistrer l\'APK fusionné dans le même répertoire que celui d\'où provient le fichier).</string>
+    <string name="grant_storage">Autorisation de stockage nécessaire pour enregistrer dans le même répertoire que le fichier sélectionné</string>
+    <string name="no_filepath">"Impossible d'écrire dans le chemin du fichier "</string>
+    <string name="change_text_color">Changer la couleur du texte</string>
+    <string name="change_background_color">Changer la couleur de l\'arrière-plan</string>
+    <string name="sign_failed">Échec de la signature de l\'APK, enregistrement sans signature</string>
+    <string name="cancel">Annuler</string>
+    <string name="select">Sélectionner</string>
+    <string name="label_parent_directory">Répertoire parent</string>
+    <string name="last_edit">Dernière modification : </string>
+    <string name="error_dir_access">Le répertoire ne peut pas être accédé</string>
+    <string name="lang" translatable="false">Langue</string>
+    <string name="settings">Paramètres</string>
+    <string name="close">Fermer</string>
+</resources>

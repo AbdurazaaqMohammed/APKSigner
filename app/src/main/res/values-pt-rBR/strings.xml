@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name" translatable="false">AntiSplit M</string>
+    <string name="merge">Selecione split APK para mesclar/AntiSplit</string>
+    <string name="success_saved">Arquivo salvo com sucesso</string>
+    <string name="ask">Pergunte onde salvar o arquivo a cada vez (se desabilitado, salve o APK mesclado no mesmo diretório de onde veio o arquivo)</string>
+    <string name="grant_storage">Permissão de armazenamento necessária para salvar no mesmo diretório do arquivo selecionado</string>
+    <string name="no_filepath">"Não é possível gravar no caminho do arquivo "</string>
+    <string name="change_text_color">Alterar cor do texto</string>
+    <string name="change_background_color">Alterar cor de fundo</string>
+    <string name="sign_failed">Falha ao assinar APK, salvando sem assinar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="select">Selecione</string>
+    <string name="label_parent_directory">Diretório pai</string>
+    <string name="last_edit">Última edição: </string>
+    <string name="error_dir_access">O diretório não pode ser acessado</string>
+    <string name="lang" translatable="false">Idioma</string>
+    <string name="settings">Configurações</string>
+    <string name="close">Fechar</string>
+    <string name="label_parent_dir" translatable="false">…</string>
+    <string name="create_issue">Criar problema no GitHub</string>
+    <string name="copy_log">Copiar log</string>
+    <string name="copied_log">Log copiado</string>
+</resources>

@@ -1,0 +1,16 @@
+<resources>
+    <string name="merge">Pilih APK terpisah yang ingin Dileburkan/Di-AntiSplit</string>
+    <string name="success_saved">Berkas berhasil disimpan</string>
+    <string name="ask">Tanyakan terus di mana berkas akan disimpan (jika dinonaktifkan, simpan APK yang dileburkan ke direktori yang sama tempatnya berkas berasal)</string>
+    <string name="grant_storage">Perizinan penyimpanan diperlukan untuk menyimpan ke direktori yang sama dengan berkas yang dipilih</string>
+    <string name="no_filepath">"Tidak bisa menuliskan ke jalur berkas "</string>
+    <string name="change_text_color">Ubah warna teks</string>
+    <string name="change_background_color">Ubah warna latar belakang</string>
+    <string name="sign_failed">Gagal menandatangani APK, sedang menyimpan tanpa menandatangani</string>
+    <string name="cancel">Batalkan</string>
+    <string name="select">Pilih</string>
+    <string name="label_parent_directory">Direktori Induk</string>
+    <string name="last_edit">Terakhir kali disunting: </string>
+    <string name="error_dir_access">Direktorinya tidak bisa diakses</string>
+    <string name="lang" translatable="false">Bahasa</string>
+</resources>

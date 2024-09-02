@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="merge">Seleccionar APK divididos para Fusionar/AntiSplit</string>
+    <string name="success_saved">Archivo guardado exitosamente</string>
+    <string name="ask">Preguntar dónde guardar (si está deshabilitado, guarda en el directorio del archivo).</string>
+    <string name="grant_storage">Se requiere permiso para guardar en el mismo directorio del archivo.</string>
+    <string name="no_filepath">"No se puede escribir en la ruta del archivo "</string>
+    <string name="change_text_color">Cambiar color del texto</string>
+    <string name="change_background_color">Cambiar color de fondo</string>
+    <string name="sign_failed">Error al firmar el APK, guardando sin firmar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="select">Seleccionar</string>
+    <string name="label_parent_directory">Directorio padre</string>
+    <string name="last_edit">Última edición:</string>
+    <string name="error_dir_access">No se puede acceder al directorio</string>
+    <string name="lang" translatable="false">Idioma</string>
+    <string name="settings">Configuración</string>
+</resources>

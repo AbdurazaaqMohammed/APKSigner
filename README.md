@@ -13,10 +13,10 @@ Note: Some apps verify the signature of the APK or take other measures to check 
 # Used projects
 ⭐ [Android port of apksig library](https://github.com/MuntashirAkon/apksig-android) by [MuntashirAkon](https://github.com/MuntashirAkon) to sign APKs
 
-Apache Commons Compress
-PseudoApkSigner by Aefyr for backup signing on older Android versions
-AmbilWarna Color Picker
-android-filepicker by Angad Singh for file picker on older Android versions
+* Apache Commons Compress
+* PseudoApkSigner by Aefyr for backup signing on older Android versions
+* AmbilWarna Color Picker
+* android-filepicker by Angad Singh for file picker on older Android versions
 
 # Todo
 * Support v4 signature scheme

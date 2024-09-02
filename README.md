@@ -1,12 +1,12 @@
 # APK Signer
-Simple Android app to sign APKs
+Simple Android app to sign APKs, supports signing split APKs and multiple files.
 
 # Usage
 
 There are 3 ways to open the APK to sign:
 * Share the file and select Sign APK in the share menu
 * Press (open) the file and select Sign APK in available options
-* Open the app from launcher and press the button then select the APK file.
+* Open the app from launcher and press the button then select the APK file(s).
 
 Note: Some apps verify the signature of the APK or take other measures to check if the app was modified, which may cause it to crash on startup.
 

@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.cert.X509Certificate;
 import java.util.Collections;
+import java.util.Objects;
 
 public class SignWrapper {
 
@@ -48,7 +49,7 @@ public class SignWrapper {
         }
         String alias = keystore.aliases().nextElement();
 
-        new ApkSigner.Builder(Collections.singletonList(new ApkSigner.SignerConfig.Builder("CERT",
+        ApkSigner.Builder b = new ApkSigner.Builder(Collections.singletonList(new ApkSigner.SignerConfig.Builder("CERT",
                 ((KeyStore.PrivateKeyEntry) keystore.getEntry(alias, new KeyStore.PasswordProtection(pw))).getPrivateKey(),
                 Collections.singletonList((X509Certificate) keystore.getCertificate(alias))).build()))
                 .setInputApk(inputApk)
@@ -57,9 +58,15 @@ public class SignWrapper {
                 .setV1SigningEnabled(v1)
                 .setV2SigningEnabled(v2)
                 .setV3SigningEnabled(v3)
-                .setV4SigningEnabled(v4)
-                .setV4SignatureOutputFile(new File(output.getParentFile(), inputApk.getName().replaceFirst("\\.(xapk|aspk|apk[sm]|apk)", ".idsig")))
-                .build().sign();
+                .setV4SigningEnabled(v4);
+                if(v4) {
+                    String fileName = inputApk.getName();
+                    String formattedName = fileName.replaceFirst("\\.(xapk|aspk|apk[sm]|apk)", ".idsig");
+                    int lastDotIndex;
+                    b.setV4SignatureOutputFile(new File(output.getParentFile(), Objects.equals(fileName, formattedName) ?  (lastDotIndex = fileName.lastIndexOf('.')) == -1 ?
+                            fileName + "_signed" : fileName.substring(0, lastDotIndex) + "_signed." + fileName.substring(lastDotIndex + 1) : formattedName));
+                }
+                b.build().sign();
     }
 
     public void signApk(File inputApk, File output) throws Exception {

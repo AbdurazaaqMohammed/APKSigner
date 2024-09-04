@@ -48,4 +48,5 @@
     <string name="v4" translatable="false">Signature scheme v4</string>
     <string name="v2" translatable="false">Signature scheme v2</string>
     <string name="v1" translatable="false">Signature scheme v1</string>
+    <string name="save_pass">Save password</string>
 </resources>

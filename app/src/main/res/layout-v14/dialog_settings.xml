@@ -53,6 +53,13 @@
                 android:text="@string/select_key" />
 
             <Switch
+                android:id="@+id/passSaveSwitch"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="@string/save_pass" />
+
+            <Switch
                 android:id="@+id/v1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -78,7 +85,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:visibility="gone"
                 android:text="@string/v4" />
 
        </LinearLayout>

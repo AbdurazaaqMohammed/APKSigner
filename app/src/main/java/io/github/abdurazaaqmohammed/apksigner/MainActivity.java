@@ -3,7 +3,7 @@ package io.github.abdurazaaqmohammed.apksigner;
 import static android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION;
 import static io.github.abdurazaaqmohammed.apksigner.LegacyUtils.doesNotSupportInbuiltAndroidFilePicker;
 import static io.github.abdurazaaqmohammed.apksigner.LegacyUtils.supportsActionBar;
-import static io.github.abdurazaaqmohammed.apksigner.LegacyUtils.supportsArraysCopyOfAndDownloadManager;
+import static io.github.abdurazaaqmohammed.apksigner.LegacyUtils.supportsEditorApply;
 import static io.github.abdurazaaqmohammed.apksigner.LegacyUtils.supportsAsyncTask;
 
 import com.aefyr.pseudoapksigner.IOUtils;
@@ -65,6 +65,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 import java.nio.channels.ClosedByInterruptException;
+import java.security.KeyStore;
+import java.security.UnrecoverableKeyException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -93,6 +95,7 @@ public class MainActivity extends Activity {
     public static String lang;
     private String keyPath;
     private String password;
+    private boolean savePassword;
     public FileUtilsWrapper fileUtil;
     private boolean v1;
     private boolean v2;
@@ -130,18 +133,18 @@ public class MainActivity extends Activity {
             setButtonBorder(settingsMenu.findViewById(R.id.changeTextColor));
             setButtonBorder(settingsMenu.findViewById(R.id.changeBgColor));
             setButtonBorder(settingsMenu.findViewById(R.id.keyPicker));
-
-            if(!supportsSwitch) {
+            ((TextView) settingsMenu.findViewById(supportsSwitch ? R.id.v1 : R.id.v1Text)).setTextColor(color);
+            ((TextView) settingsMenu.findViewById(supportsSwitch ? R.id.v2 : R.id.v2Text)).setTextColor(color);
+            ((TextView) settingsMenu.findViewById(supportsSwitch ? R.id.v3 : R.id.v3Text)).setTextColor(color);
+            ((TextView) settingsMenu.findViewById(supportsSwitch ? R.id.v4 : R.id.v4Text)).setTextColor(color);
+            ((TextView) settingsMenu.findViewById(supportsSwitch ? R.id.passSaveSwitch : R.id.passSaveSwitchText)).setTextColor(color);
+            if (!supportsSwitch) {
                 setButtonBorder(settingsMenu.findViewById(R.id.ask));
                 setButtonBorder(settingsMenu.findViewById(R.id.v1));
                 setButtonBorder(settingsMenu.findViewById(R.id.v2));
                 setButtonBorder(settingsMenu.findViewById(R.id.v3));
                 setButtonBorder(settingsMenu.findViewById(R.id.v4));
-            } else {
-                ((TextView) settingsMenu.findViewById(R.id.v1)).setTextColor(color);
-                ((TextView) settingsMenu.findViewById(R.id.v2)).setTextColor(color);
-                ((TextView) settingsMenu.findViewById(R.id.v3)).setTextColor(color);
-                ((TextView) settingsMenu.findViewById(R.id.v4)).setTextColor(color);
+                setButtonBorder(settingsMenu.findViewById(R.id.passSaveSwitch));
             }
         }
     }
@@ -155,11 +158,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         handler = new Handler(Looper.getMainLooper());
 
-        ActionBar ab;
-        File externalCacheDir;
-        if (LegacyUtils.supportsExternalCacheDir && ((externalCacheDir = getExternalCacheDir()) != null)) deleteDir(externalCacheDir);
-
         deleteDir(getCacheDir());
+
+        ActionBar ab;
         if(supportsActionBar && (ab = getActionBar()) != null) ab.hide();
 
         setContentView(R.layout.activity_main);
@@ -171,6 +172,7 @@ public class MainActivity extends Activity {
         v2 = settings.getBoolean("v2", true);
         v3 = settings.getBoolean("v3", true);
         v4 = settings.getBoolean("v4", false);
+        savePassword = settings.getBoolean("savePassword", false);
 
         try {
             File debugKey = new File(getFilesDir(), "debug.keystore");
@@ -229,9 +231,8 @@ public class MainActivity extends Activity {
             Button keyPicker = dialogView.findViewById(R.id.keyPicker);
             keyPicker.setText(rss.getString(R.string.select_key, new File(keyPath).getName()));
             keyPicker.setOnClickListener(view -> {
-                File[] fs = getFilesDir().listFiles();
                 ArrayList<File> keys = new ArrayList<>();
-                for(File f : fs) if (!f.getName().endsWith(".txt")) keys.add(f);
+                for(File f : getFilesDir().listFiles()) if (f.isFile() && !f.getName().endsWith(".txt")) keys.add(f);
                 String[] names = new String[keys.size() + 1];
                 names[0] = "Select new key";
                 String curr = null;
@@ -257,7 +258,14 @@ public class MainActivity extends Activity {
                             FilePickerDialog fp = new FilePickerDialog(this, properties, textColor, bgColor);
                             fp.setTitle(rss.getString(R.string.select));
                             fp.setDialogSelectionListener(files -> {
-                                keyPath = files[0];
+                                Uri keyUri = Uri.fromFile(new File(files[0]));
+                                String newPath = getFilesDir() + File.separator + getOriginalFileName(this, keyUri);
+                                try {
+                                    fileUtil.copyFile(fileUtil.getInputStream(keyUri), new File(newPath));
+                                } catch (IOException e) {
+                                    showError(e);
+                                }
+                                promptEnterPassword(newPath);
                                 fp.dismiss();
                             });
                             runOnUiThread(fp::show);
@@ -278,9 +286,17 @@ public class MainActivity extends Activity {
                                 , 111);
                     } else {
                         File selected = keys.get(which - 1);
-                        keyPath = selected.getPath();
-                        if(Objects.equals(selected.getName(), "debug.keystore")) password = "android";
-                        else promptEnterPassword();
+                        String newPath = selected.getPath();
+                        if(Objects.equals(selected.getName(), "debug.keystore")) {
+                            keyPath = newPath;
+                            password = "android";
+                        }
+                        else {
+                            String newPass = settings.getString(selected.getName(), "");
+                            if(TextUtils.isEmpty(newPass)) promptEnterPassword(newPath);
+                            else if(savePassword) password = newPass;
+                            else promptEnterPassword(newPath);
+                        }
                     }
                 }).create(), names, TextUtils.isEmpty(curr) ? "debug.keystore" : curr);
             });
@@ -316,6 +332,43 @@ public class MainActivity extends Activity {
 
             dialogView.findViewById(R.id.changeBgColor).setOnClickListener(v3 -> showColorPickerDialog(false, bgColor, dialogView));
             dialogView.findViewById(R.id.changeTextColor).setOnClickListener(v4 -> showColorPickerDialog(true, textColor, dialogView));
+            CompoundButton passSaveSwitch =  dialogView.findViewById(R.id.passSaveSwitch);
+            passSaveSwitch.setChecked(savePassword);
+            passSaveSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if(isChecked) {
+                    TextView confirmSaveTitle = new TextView(this);
+                    confirmSaveTitle.setText("Warning");
+                    confirmSaveTitle.setTextColor(textColor);
+                    confirmSaveTitle.setTextSize(20);
+                    TextView body = new TextView(this);
+                    body.setTextColor(textColor);
+                    body.setText("The password will be saved in plain text in the app's private data folder. Without root, no app can access this, but any app with root can access it. You should be careful about saving the key password if you have root.");
+                    styleAlertDialog(new AlertDialog.Builder(this)
+                            .setNegativeButton(rss.getString(R.string.cancel), (dialog1, which1) -> {
+                                savePassword = false;
+                                SharedPreferences.Editor e = settings.edit();
+                                for(File f : getFilesDir().listFiles()) e.remove(f.getName());
+                                if(supportsEditorApply) e.apply();
+                                else e.commit();
+                                passSaveSwitch.setChecked(false);
+                                dialog1.dismiss();
+                            })
+                            .setView(body)
+                            .setCustomTitle(confirmSaveTitle)
+                            .setPositiveButton("OK", (dialog12, which12) -> {
+                                savePassword = true;
+                                passSaveSwitch.setChecked(true);
+                                dialog12.dismiss();
+                            }).create(), null, null);
+                } else {
+                    SharedPreferences.Editor e = settings.edit();
+                    for(File f : getFilesDir().listFiles()) e.remove(f.getName());
+                    if(supportsEditorApply) e.apply();
+                    else e.commit();
+                    savePassword = false;
+                }
+            });
+
             TextView title = new TextView(this);
             title.setText(rss.getString(R.string.settings));
             title.setTextColor(textColor);
@@ -577,12 +630,13 @@ public class MainActivity extends Activity {
                 .putBoolean("v2", v2)
                 .putBoolean("v3", v3)
                 .putBoolean("v4", v4)
+                .putBoolean("savePassword", savePassword)
                 .putInt("textColor", textColor)
                 .putInt("backgroundColor", bgColor)
                 .putString("lang", lang)
                 .putString("password", password)
                 .putString("signPath", keyPath);
-        if (supportsArraysCopyOfAndDownloadManager) e.apply();
+        if (supportsEditorApply) e.apply();
         else e.commit();
 
         super.onPause();
@@ -598,9 +652,7 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        File dir = getCacheDir();
-        deleteDir(dir);
-        if (LegacyUtils.supportsExternalCacheDir && (dir = getExternalCacheDir()) != null) deleteDir(dir);
+        deleteDir(getCacheDir());
         super.onDestroy();
     }
 
@@ -624,8 +676,9 @@ public class MainActivity extends Activity {
         openFilePickerToSaveOrSaveNow();
     }
 
-    private void promptEnterPassword() {
+    private void promptEnterPassword(String newKeyPath) {
         String originalKeyPath = keyPath;
+        keyPath = newKeyPath;
         EditText input = new EditText(this);
         input.setTextColor(textColor);
         String titleText = "Enter keystore password";
@@ -636,12 +689,53 @@ public class MainActivity extends Activity {
         styleAlertDialog(new AlertDialog.Builder(this).setCustomTitle(title).setView(input).setPositiveButton("OK", (dialog, which) -> {
             dialog.dismiss();
             String inputString = input.getText().toString();
-            if(TextUtils.isEmpty(inputString)) showError("No password input");
-            else password = inputString;
+            if(TextUtils.isEmpty(inputString)) {
+                showError("No password input");
+                keyPath = originalKeyPath;
+                String name = new File(keyPath).getName();
+                Toast.makeText(this, "Restored last signature " + name, Toast.LENGTH_LONG).show();
+                password = Objects.equals(name, "debug.keystore") ? "android" : getSharedPreferences("set", MODE_PRIVATE).getString(new File(keyPath).getName(), "");
+            }
+            else {
+                boolean errOccurred = false;
+                KeyStore keystore;
+                String[] types = {"JKS", "PKCS12", "BKS"};
+                for (int i = 0; i < types.length; i++) {
+                    String type = types[i];
+                    try (InputStream fis = FileUtils.getInputStream(keyPath)) {
+                        keystore = KeyStore.getInstance(type);
+                        keystore.load(fis, inputString.toCharArray());
+                    } catch (Exception e) {
+                        if(e.getCause() instanceof UnrecoverableKeyException) {
+                            errOccurred = true;
+                            showError("Invalid password input");
+                            keyPath = originalKeyPath;
+                            String name = new File(keyPath).getName();
+                            Toast.makeText(this, "Restored last signature " + name, Toast.LENGTH_LONG).show();
+                            password = Objects.equals(name, "debug.keystore") ? "android" : getSharedPreferences("set", MODE_PRIVATE).getString(new File(keyPath).getName(), "");                        } else if(i == types.length - 1) {
+                            errOccurred = true;
+                            keyPath = originalKeyPath;
+                            showError(e);
+                            String name = new File(keyPath).getName();
+                            Toast.makeText(this, "Restored last signature " + name, Toast.LENGTH_LONG).show();
+                            password = Objects.equals(name, "debug.keystore") ? "android" : getSharedPreferences("set", MODE_PRIVATE).getString(new File(keyPath).getName(), "");                        }
+                    }
+                }
+                if(!errOccurred) {
+                    password = inputString;
+                    if(savePassword) {
+                        SharedPreferences.Editor e = getSharedPreferences("set", Context.MODE_PRIVATE).edit().putString(new File(keyPath).getName(), password);
+                        if(supportsEditorApply) e.apply();
+                        else e.commit();
+                    }
+                }
+            }
         }).setNegativeButton(rss.getString(R.string.cancel), (dialog, which) -> {
             dialog.dismiss();
             keyPath = originalKeyPath;
-            Toast.makeText(this, "Restored last signature " + new File(keyPath).getName(), Toast.LENGTH_LONG).show();
+            String name = new File(keyPath).getName();
+            Toast.makeText(this, "Restored last signature " + name, Toast.LENGTH_LONG).show();
+            password = Objects.equals(name, "debug.keystore") ? "android" : getSharedPreferences("set", MODE_PRIVATE).getString(new File(keyPath).getName(), "");
         }).create(), null, null);
     }
 
@@ -653,8 +747,9 @@ public class MainActivity extends Activity {
             case 111:
                 Uri keyUri = data.getData();
                 try {
-                    fileUtil.copyFile(fileUtil.getInputStream(keyUri), new File(keyPath = getFilesDir() + File.separator + getOriginalFileName(this, keyUri)));
-                    promptEnterPassword();
+                    String newPath = getFilesDir() + File.separator + getOriginalFileName(this, keyUri);
+                    fileUtil.copyFile(fileUtil.getInputStream(keyUri), new File(newPath));
+                    promptEnterPassword(newPath);
                 } catch (IOException e) {
                     showError(e);
                 }
@@ -745,7 +840,7 @@ public class MainActivity extends Activity {
                 int cut = Objects.requireNonNull(result).lastIndexOf('/'); // Ensure it throw the NullPointerException here to be caught
                 if (cut != -1) result = result.substring(cut + 1);
             }
-            return result.replaceFirst("\\.(xapk|aspk|apk[sm]|apk)", "_signed.$1");
+            return formatFileNameToSave(result);
         } catch (Exception ignored) {
             return "filename_not_found";
         }
@@ -764,7 +859,7 @@ public class MainActivity extends Activity {
                 originalFilePath = fileUtil.getPath(apkUri);
                 File f;
                 String newFilePath = TextUtils.isEmpty(originalFilePath) ?
-                        getAppFolder() + File.separator + getOriginalFileName(this, apkUri) : originalFilePath.replaceFirst("\\.(xapk|aspk|apk[sm]|apk)", "_signed.$1");
+                        getAppFolder() + File.separator + getOriginalFileName(this, apkUri) : formatFileNameToSave(originalFilePath);
                 if(TextUtils.isEmpty(newFilePath) ||
                         newFilePath.startsWith("/data/")
                        // || !(f = new File(newFilePath)).createNewFile() || f.canWrite()
@@ -779,6 +874,15 @@ public class MainActivity extends Activity {
                 showError(e);
             }
         }
+    }
+
+    private static String formatFileNameToSave(String fileName) {
+        String output = fileName.replaceFirst("\\.(xapk|aspk|apk[sm]|apk)", "_signed.$1");
+            int lastDotIndex;
+            return Objects.equals(fileName, output) ?
+                    (lastDotIndex = fileName.lastIndexOf('.')) == -1 ?
+                            fileName + "_signed" : fileName.substring(0, lastDotIndex) + "_signed." + fileName.substring(lastDotIndex + 1)
+                    : output;
     }
 
     private static SignWrapper signWrapper = null;

@@ -1,7 +1,6 @@
 package com.starry;
 
 import static io.github.abdurazaaqmohammed.apksigner.MainActivity.doesNotHaveStoragePerm;
-import static io.github.abdurazaaqmohammed.apksigner.MainActivity.getOriginalFileName;
 
 import android.annotation.SuppressLint;
 import android.content.ContentUris;
@@ -14,6 +13,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import io.github.abdurazaaqmohammed.apksigner.LegacyUtils;
+import io.github.abdurazaaqmohammed.apksigner.MainActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -231,7 +231,7 @@ public class FileUtilsWrapper {
     }
 
     public File copyFileToInternalStorage(Uri uri) throws IOException {
-        File output = new File(context.getCacheDir(), getOriginalFileName(context, uri));
+        File output = new File(context.getCacheDir(), MainActivity.getOriginalFileName(context, uri));
         if(output.exists() && output.length() > 999) return output;
         try (OutputStream outputStream = getOutputStream(output); InputStream cursor = context.getContentResolver().openInputStream(uri)) {
             int read;

@@ -58,6 +58,19 @@
             android:text="@string/select_key" />
 
         <TextView
+            android:id="@+id/passSaveSwitchText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/save_pass" />
+
+        <ToggleButton
+            android:id="@+id/passSaveSwitch"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+
+        <TextView
+            android:id="@+id/v1Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
@@ -69,6 +82,7 @@
             android:layout_width="match_parent"/>
 
         <TextView
+            android:id="@+id/v2Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
@@ -80,6 +94,7 @@
             android:layout_width="match_parent"/>
 
         <TextView
+            android:id="@+id/v3Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
@@ -91,15 +106,14 @@
             android:layout_width="match_parent"/>
 
         <TextView
+            android:id="@+id/v4Text"
             android:layout_width="match_parent"
-            android:visibility="gone"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:text="@string/v4" />
 
         <ToggleButton
             android:id="@+id/v4"
-            android:visibility="gone"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"/>
 

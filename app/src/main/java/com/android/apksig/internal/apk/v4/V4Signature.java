@@ -184,7 +184,7 @@ public class V4Signature {
 
             // Combine all arrays into one.
             byte[] result = new byte[0];
-            if(LegacyUtils.supportsArraysCopyOfAndDownloadManager) result = Arrays.copyOf(arrays[0], size);
+            if(LegacyUtils.supportsEditorApply) result = Arrays.copyOf(arrays[0], size);
             else {
                 System.arraycopy(arrays[0], 0, result, 0, arrays[0].length);
             }

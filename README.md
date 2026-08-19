@@ -1,6 +1,16 @@
 # APK Signer
 Simple Android app to sign APKs, supports signing split APKs and multiple files.
 
+# Note
+
+This app is really outdated all features and more have been implemented with better interface, speed and functionality (Support JKS & creating new key) in my new app <a href="https://github.com/AbdurazaaqMohammed/MP-Manager">MP Manager</a>, Try it instead
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/fbd4da0d-3ade-46b2-a79e-b55c697b1aa9" width="250" alt="Screenshot of Sign APK Dialog in MP Manager">
+  <br>
+  Improved APK Signer in <a href="https://github.com/AbdurazaaqMohammed/MP-Manager">MP Manager</a>
+</p>
+
 # Usage
 
 There are 3 ways to open the APK to sign:
